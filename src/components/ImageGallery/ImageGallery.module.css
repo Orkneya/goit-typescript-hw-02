@@ -1,0 +1,7 @@
+.gallery {
+  margin-top: 70px; /* отступ для зафиксированного input */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 0;
+}

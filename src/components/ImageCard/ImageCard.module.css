@@ -1,0 +1,11 @@
+.gallery_items {
+  display: block;
+  width: 100%;
+  max-height: 267px;
+  border-radius: 8px;
+  cursor: pointer;
+  object-fit: cover;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
