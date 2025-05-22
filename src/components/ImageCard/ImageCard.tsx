@@ -1,9 +1,13 @@
+import { Image } from "../../type/ImageData";
 import s from "./ImageCard.module.css";
+type Props = {
+  newImg: Image;
+  openModal: (img: Image) => void;
+};
 
-const ImageCard = ({ newImg, openModal }) => {
+const ImageCard = ({ newImg, openModal }: Props) => {
   return (
     <div>
-      {/* <p>{newImg.alt_description}</p> */}
       <img
         className={s.gallery_items}
         src={newImg.urls.small}

@@ -1,6 +1,6 @@
 import React from "react";
 
-const ErrorMessage = () => {
+const ErrorMessage: React.FC = () => {
   return <div>ErrorMessage</div>;
 };
 

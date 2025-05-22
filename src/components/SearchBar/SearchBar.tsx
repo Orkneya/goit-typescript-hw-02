@@ -1,16 +1,23 @@
+import { FormEvent } from "react";
 import s from "./SearchBar.module.css";
 import toast, { Toaster } from "react-hot-toast";
 
-const SearchBar = ({ handleChangeQuery }) => {
-  const handleSubmit = (e) => {
+type Props = {
+  handleChangeQuery: (newImg: string) => void;
+};
+
+const SearchBar: React.FC<Props> = ({ handleChangeQuery }) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newImg = e.target.elements.newImg.value;
+    const form = e.target as HTMLFormElement;
+    const newImg = (form.elements.namedItem("newImg") as HTMLInputElement)
+      .value;
     if (!newImg.trim()) {
-      toast.error("Please, enter images and photos...");
+      toast.error("Please, enter images or photos...");
     } else {
       handleChangeQuery(newImg);
     }
-    e.target.reset(0);
+    form.reset();
   };
   return (
     <header>

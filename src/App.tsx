@@ -8,18 +8,19 @@ import Loader from "./components/Loader/Loader";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import Modal from "react-modal";
 import ImageModal from "./components/ImageModal/ImageModal";
+import { Image } from "./type/ImageData";
 
 Modal.setAppElement("#root");
 
-function App() {
-  const [loading, setLoading] = useState(false);
-  const [query, setQuery] = useState("");
-  const [images, setImages] = useState([]);
-  const [error, setError] = useState(false);
-  const [page, setPage] = useState(1);
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [totalPages, setTotalPages] = useState(null);
+const App: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [query, setQuery] = useState<string>("");
+  const [images, setImages] = useState<Image[]>([]);
+  const [error, setError] = useState<boolean | string>(false);
+  const [page, setPage] = useState<number>(1);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
+  const [totalPages, setTotalPages] = useState<number>(0);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -30,9 +31,8 @@ function App() {
           return;
         }
         const data = await fetchImgs(query, page, abortController.signal);
-
         setImages((prev) => [...prev, ...data.results]);
-        setTotalPages(data.total_pages);
+        setTotalPages(Math.min(data.totalPages, 20));
       } catch (error) {
         console.log("Error:", error);
         setError(true);
@@ -48,16 +48,16 @@ function App() {
     };
   }, [query, page]);
 
-  function modalIsOpen(image) {
+  function modalIsOpen(image: Image): void {
     setSelectedImage(image);
     setIsOpen(true);
   }
-  function closeModal() {
+  function closeModal(): void {
     setIsOpen(false);
     setSelectedImage(null);
   }
 
-  const handleChangeQuery = (newQuery) => {
+  const handleChangeQuery = (newQuery: string): void => {
     toast.success(`Query changed to ${newQuery}`);
     setQuery(newQuery);
     setImages([]);
@@ -65,23 +65,21 @@ function App() {
   };
 
   return (
-    <div className="s.container">
+    <div className="container">
       <Toaster />
       <SearchBar handleChangeQuery={handleChangeQuery} />
       {loading && <Loader />}
       <ImageGallery newImgs={images} openModal={modalIsOpen} />
-      {isOpen && (
-        <ImageModal
-          isOpen={modalIsOpen}
-          onRequestClose={closeModal}
-          image={selectedImage}
-        />
-      )}
+      <ImageModal
+        isOpen={isOpen}
+        onRequestClose={closeModal}
+        image={selectedImage}
+      />
       {page < totalPages && images.length > 0 && (
         <LoadMoreBtn onClick={() => setPage(page + 1)} />
       )}
     </div>
   );
-}
+};
 
 export default App;

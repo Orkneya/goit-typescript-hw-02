@@ -1,7 +1,13 @@
 import React from "react";
 import Modal from "react-modal";
+import { Image } from "../../type/ImageData";
+type Props = {
+  isOpen: boolean;
+  onRequestClose: () => void;
+  image: Image | null;
+};
 
-const ImageModal = ({ isOpen, onRequestClose, image }) => {
+const ImageModal = ({ isOpen, onRequestClose, image }: Props) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -29,7 +35,7 @@ const ImageModal = ({ isOpen, onRequestClose, image }) => {
       {image && (
         <img
           src={image.urls.regular}
-          alt={image.alt_description}
+          alt={image.alt_description || "Selected image"}
           style={{ maxWidth: "100%", maxHeight: "100%", borderRadius: "8px" }}
         />
       )}
